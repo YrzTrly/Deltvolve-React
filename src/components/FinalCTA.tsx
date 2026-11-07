@@ -1,5 +1,5 @@
-export Function finalCTA(){
-    return(
+export function FinalCTA() {
+  return (
     <section id="final_cta">
       <div id="cta_container">
         <h1>Have an idea? Let's build it.</h1>
@@ -7,6 +7,5 @@ export Function finalCTA(){
         <button id="contact_us">Contact Us</button>
       </div>
     </section>
-    )
+  );
 }
-

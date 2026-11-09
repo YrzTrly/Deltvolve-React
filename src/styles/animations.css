@@ -1,0 +1,45 @@
+/* Shared by the hero, What We Do, Projects, FAQ, Founders and CTA headings */
+@keyframes hero-gradient {
+  from { background-position: 0% center; }
+  to   { background-position: 200% center; }
+}
+
+/* Scroll reveal (text) */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.reveal.reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Pop-in (cards, slideshow, CTA, footer) */
+.pop {
+  opacity: 0;
+  translate: 0 50px;
+  scale: 0.96;
+  transition:
+    opacity 0.8s ease,
+    translate 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+  transition-delay:
+    var(--pop-delay, 0s), var(--pop-delay, 0s), var(--pop-delay, 0s), 0s, 0s, 0s;
+}
+.pop.pop--in {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .pop { opacity: 1; translate: none; scale: none; transition: none; }
+}

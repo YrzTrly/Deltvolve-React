@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--black);
+  background-image: radial-gradient(
+    circle at 50% 0%,
+    rgba(0, 166, 255, 0.12),
+    transparent 60%
+  );
+  color: white;
+  overflow-x: hidden;
+  overflow-x: clip; /* keeps the sticky navbar working */
+}
+
+body {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Manrope", Arial, Helvetica, sans-serif;
+}
+
+section {
+  scroll-margin-top: 80px; /* keeps headings clear of the sticky navbar */
+}

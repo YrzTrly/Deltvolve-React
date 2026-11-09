@@ -1,0 +1,212 @@
+/* Layout */
+.hero {
+  position: relative;
+  top: -60px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas: "text image";
+  align-items: center;
+  gap: 64px;
+  min-height: calc(100vh - 80px);
+  padding: 48px;
+}
+
+.hero__text {
+  grid-area: text;
+}
+
+.hero__heading {
+  margin: 0 0 28px 0;
+  font-size: 4rem;
+  line-height: 1.05;
+  font-weight: 700;
+
+  /* white -> electric -> white, so the loop has no visible jump */
+  background-image: linear-gradient(
+    90deg,
+    #ffffff 0%,
+    var(--electric) 50%,
+    #ffffff 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 22px rgba(0, 166, 255, 0.35));
+  animation: hero-gradient 6s linear infinite; /* defined in animations.css */
+}
+
+.hero__subheading {
+  margin: 0;
+  font-size: 1.6rem;
+  line-height: 1.4;
+  font-weight: 400;
+  color: var(--gray);
+}
+
+/* Image column */
+.hero__image {
+  position: relative;
+  grid-area: image;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 450px;
+
+  /* float uses `translate`, tilt uses `transform`, so they don't clash */
+  animation: hero-float 7s ease-in-out infinite;
+  transition: transform 0.25s ease-out;
+}
+
+@keyframes hero-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -16px;
+  }
+}
+
+/* Lets the browser animate the reveal angle smoothly */
+@property --draw {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 363deg; /* fully drawn by default */
+}
+
+.hero__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+
+  /* Mask sweeps around the triangle's center, starting at the bottom-left
+     corner and going clockwise */
+  -webkit-mask-image: conic-gradient(
+    from 240deg at 50% 66%,
+    #000 calc(var(--draw) - 3deg),
+    transparent var(--draw)
+  );
+  mask-image: conic-gradient(
+    from 240deg at 50% 66%,
+    #000 calc(var(--draw) - 3deg),
+    transparent var(--draw)
+  );
+
+  will-change: filter;
+  animation:
+    triangle-draw 2.6s cubic-bezier(0.65, 0, 0.35, 1) 0.4s both,
+    triangle-heat 2.6s ease-out 0.4s both,
+    triangle-glow 3.5s ease-in-out 3s infinite;
+}
+
+/* Shockwave ring: appears once the triangle has finished drawing */
+.hero__image::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 2px solid var(--electric);
+  box-shadow:
+    0 0 24px rgba(0, 166, 255, 0.7),
+    inset 0 0 24px rgba(0, 166, 255, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  animation: ring-burst 1.2s ease-out 3s forwards;
+}
+
+@keyframes triangle-draw {
+  from {
+    --draw: 0deg;
+  }
+  to {
+    --draw: 363deg;
+  }
+}
+
+/* White-hot while being drawn, then cools to normal blue */
+@keyframes triangle-heat {
+  0% {
+    filter: brightness(1.7)
+      drop-shadow(0 0 16px rgba(0, 166, 255, 1))
+      drop-shadow(0 0 45px rgba(0, 166, 255, 0.9));
+  }
+  100% {
+    filter: brightness(1)
+      drop-shadow(0 0 12px rgba(0, 166, 255, 0.6))
+      drop-shadow(0 0 30px rgba(0, 166, 255, 0.35));
+  }
+}
+
+@keyframes ring-burst {
+  0% {
+    transform: translate(-50%, -50%) scale(0.3);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.7);
+    opacity: 0;
+  }
+}
+
+/* Gentle breathing glow after the drawing finishes */
+@keyframes triangle-glow {
+  0%,
+  100% {
+    filter: brightness(1)
+      drop-shadow(0 0 12px rgba(0, 166, 255, 0.6))
+      drop-shadow(0 0 30px rgba(0, 166, 255, 0.35));
+  }
+  50% {
+    filter: brightness(1)
+      drop-shadow(0 0 18px rgba(0, 166, 255, 0.9))
+      drop-shadow(0 0 44px rgba(0, 166, 255, 0.6));
+  }
+}
+
+/* Tablet / mobile */
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "text"
+      "image";
+    gap: 40px;
+    padding: 32px 20px;
+    min-height: auto;
+  }
+
+  .hero__heading {
+    font-size: clamp(2.5rem, 9vw, 4rem);
+  }
+
+  .hero__subheading {
+    font-size: 1.25rem;
+  }
+
+  .hero__image img {
+    max-height: 360px;
+  }
+}
+
+/* Show the finished triangle for visitors who turned motion off */
+@media (prefers-reduced-motion: reduce) {
+  .hero__heading,
+  .hero__image {
+    animation: none;
+  }
+
+  .hero__image img {
+    animation: none;
+  }
+
+  .hero__image::after {
+    display: none;
+  }
+}

@@ -1,0 +1,49 @@
+/* Scroll progress bar */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 200;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background-image: linear-gradient(90deg, var(--electric), #ffffff);
+  box-shadow: 0 0 12px rgba(0, 166, 255, 0.8);
+  pointer-events: none;
+}
+
+/* Particle network */
+.particles {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Cursor glow */
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 520px;
+  height: 520px;
+  margin: -260px 0 0 -260px;
+  border-radius: 50%;
+  background-image: radial-gradient(
+    circle,
+    rgba(0, 166, 255, 0.14),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor-glow.is-on {
+  opacity: 1;
+}
